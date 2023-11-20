@@ -4,10 +4,15 @@ import Register from './Pages/Register';
 import Login from './Pages/Login';
 import Navbar from './Components/Navbar';
 import Home from './Pages/Home';
+import AddMovie from './Pages/AddMovie';
 import useLocalStorage from './CustomHooks/useLocalStorage';
+import { createContext } from 'react';
+export const UserContext = createContext();
+
 function App() {
   const [users, addUser] = useLocalStorage('users', []);
   const [user, setUser] = useLocalStorage('user', undefined);
+  const [movies, setMovies] = useLocalStorage('movies', []);
   const navigate = useNavigate();
   const createUser = (newUser) => {
     addUser([...users, newUser]);
@@ -18,8 +23,13 @@ function App() {
     setUser(credentials);
     navigate("/");
   }
+  const handleAddMovie = (movie) => {
+    setMovies([...movies, movie]);
+    navigate("/");
+  }
+
   return (
-    <div>
+    <UserContext.Provider value={user} >
       <Navbar user={user} logout={setCurrentUser} />
       <div className="container">
         <main>
@@ -27,8 +37,9 @@ function App() {
             {user ?
               <>
                 {
-                  ['/', '/login', '/register'].map((path) => <Route key={path} path={path} element={<Home user={user}/>} />)
+                  ['/', '/login', '/register'].map((path) => <Route key={path} path={path} element={<Home movies={movies} />} />)
                 }
+                <Route path='/addMovie' element={<AddMovie handleAddMovie={handleAddMovie} />} />
               </>
               :
               <>
@@ -40,7 +51,7 @@ function App() {
           </Routes>
         </main>
       </div>
-    </div>
+    </UserContext.Provider >
   );
 }
 

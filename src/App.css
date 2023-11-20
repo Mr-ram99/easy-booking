@@ -8,11 +8,11 @@ nav {
 .brand {
   text-decoration: none;
   font-size: 1.5rem;
-  color: #ff4a00;
+  color: #000000;
 }
 
 .brand:hover {
-  color: #ff4a00;
+  color: #000000;
 }
 main{
   margin-top: 2rem;
@@ -34,7 +34,6 @@ main{
 
 .card {
   flex-basis: 325px;
-  flex-grow: 1;
   background-color: #d1d1d1;
 }
 

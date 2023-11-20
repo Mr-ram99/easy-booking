@@ -9,7 +9,7 @@ const Login = ({ setCurrentUser }) => {
     }
     else {
       const users = JSON.parse(window.localStorage.getItem('users'));
-      const user = users.filter((user) => user.email === email && user.password === password)
+      const user = users.filter((user) => user.email === email && user.password === password)[0]
       if (user) {
         setCurrentUser({ email, password, isAdmin: false });
       }
