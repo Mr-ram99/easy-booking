@@ -1,57 +1,84 @@
 import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import useLocalStorage from './CustomHooks/useLocalStorage';
 import Register from './Pages/Register';
 import Login from './Pages/Login';
 import Navbar from './Components/Navbar';
 import Home from './Pages/Home';
 import AddMovie from './Pages/AddMovie';
-import useLocalStorage from './CustomHooks/useLocalStorage';
+import SeatSelect from './Pages/SeatSelect';
 import { createContext } from 'react';
+
 export const UserContext = createContext();
 
 function App() {
-  const [users, addUser] = useLocalStorage('users', []);
-  const [user, setUser] = useLocalStorage('user', undefined);
-  const [movies, setMovies] = useLocalStorage('movies', []);
+  const [storedUsers, setStoredUsers] = useLocalStorage('users', []);
+  const [currentUser, setCurrentUser] = useLocalStorage('user', undefined);
+  const [storedMovies, setStoredMovies] = useLocalStorage('movies', []);
   const navigate = useNavigate();
-  const createUser = (newUser) => {
-    addUser([...users, newUser]);
+
+  const registerUser = (newUser) => {
+    setStoredUsers([...storedUsers, newUser]);
     window.alert('Registered');
     navigate("/");
-  }
-  const setCurrentUser = (credentials) => {
-    setUser(credentials);
+  };
+
+  const loginUser = (credentials) => {
+    setCurrentUser(credentials);
     navigate("/");
-  }
-  const handleAddMovie = (movie) => {
-    setMovies([...movies, movie]);
+  };
+
+  const addMovie = (movie) => {
+    setStoredMovies([...storedMovies, movie]);
     navigate("/");
-  }
+  };
 
   return (
-    <UserContext.Provider value={user} >
-      <Navbar user={user} logout={setCurrentUser} />
-      <div className="container">
-        <main>
+    <UserContext.Provider value={currentUser}>
+      <Navbar user={currentUser} logout={() => loginUser(undefined)} />
+      <div className="bg-slate-100 mb-10">
+        <main className="px-3">
           <Routes>
-            {user ?
-              <>
-                {
-                  ['/', '/login', '/register'].map((path) => <Route key={path} path={path} element={<Home movies={movies} />} />)
-                }
-                <Route path='/addMovie' element={<AddMovie handleAddMovie={handleAddMovie} />} />
-              </>
-              :
-              <>
-                <Route path='/' element={<Login setCurrentUser={setCurrentUser} />} />
-                <Route path='/login' element={<Login setCurrentUser={setCurrentUser} />} />
-                <Route path='/register' element={<Register createUser={createUser} />} />
-              </>
-            }
+            <Route
+              path="/"
+              element={
+                currentUser ? (
+                  <Home movies={storedMovies} />
+                ) : (
+                  <Login setCurrentUser={loginUser} />
+                )
+              }
+              index
+            />
+            <Route
+              path="/seatSelect"
+              element={
+                currentUser ? (
+                  <SeatSelect />
+                ) : (
+                  <Login setCurrentUser={loginUser} />
+                )
+              }
+              index
+            />
+            <Route
+              path="/login"
+              element={<Login setCurrentUser={loginUser} />}
+            />
+            <Route
+              path="/register"
+              element={<Register createUser={registerUser} />}
+            />
+            {currentUser && (
+              <Route
+                path="/addMovie"
+                element={<AddMovie handleAddMovie={addMovie} />}
+              />
+            )}
           </Routes>
         </main>
       </div>
-    </UserContext.Provider >
+    </UserContext.Provider>
   );
 }
 
