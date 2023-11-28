@@ -1,4 +1,12 @@
+#root{
+  max-width: 1400px;
+  margin: auto;
+}
 .seat input[type="checkbox"]:checked + label{
   background-color: #15803d;
+  color: white;
+}
+.seat input[type="checkbox"]:disabled + label{
+  background-color: #848a86;
   color: white;
 }

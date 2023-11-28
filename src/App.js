@@ -7,7 +7,9 @@ import Navbar from './Components/Navbar';
 import Home from './Pages/Home';
 import AddMovie from './Pages/AddMovie';
 import SeatSelect from './Pages/SeatSelect';
-import { createContext } from 'react';
+import Payment from './Pages/Payment';
+import default_movies from './static/movies_array';
+import { createContext, useEffect } from 'react';
 
 export const UserContext = createContext();
 
@@ -16,6 +18,10 @@ function App() {
   const [currentUser, setCurrentUser] = useLocalStorage('user', undefined);
   const [storedMovies, setStoredMovies] = useLocalStorage('movies', []);
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    setStoredMovies(default_movies);
+  },[]);
 
   const registerUser = (newUser) => {
     setStoredUsers([...storedUsers, newUser]);
@@ -51,7 +57,7 @@ function App() {
               index
             />
             <Route
-              path="/seatSelect"
+              path="/seatSelect/:id"
               element={
                 currentUser ? (
                   <SeatSelect />
@@ -59,7 +65,16 @@ function App() {
                   <Login setCurrentUser={loginUser} />
                 )
               }
-              index
+            />
+            <Route
+              path="/payment/:id"
+              element={
+                currentUser ? (
+                  <Payment />
+                ) : (
+                  <Login setCurrentUser={loginUser} />
+                )
+              }
             />
             <Route
               path="/login"

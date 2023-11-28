@@ -23,7 +23,7 @@ const Home = ({ movies }) => {
 
       <div className="mt-4 flex flex-wrap align-center justify-center gap-10">
         {movies.map((movie) => (
-          <Movie key={movie.Name} movie={movie} />
+          <Movie key={movie.id} movie={movie} />
         ))}
       </div>
     </div>

@@ -14,15 +14,15 @@ const Movie = ({ movie }) => {
         <img className="rounded-t-lg w-full" src={showtime} alt="movie-banner" />
       </Link>
       <div className="p-5">
-        <div className="mb-4 text-2xl text-slate-700">{movie.Name}</div>
+        <div className="mb-4 text-2xl text-slate-700">{movie.name}</div>
         <div className="mb-4">
-          {renderMovieInfo("Genre", movie.Genre)}
-          {renderMovieInfo("Format", movie.Format)}
+          {renderMovieInfo("Genre", movie.genre)}
+          {renderMovieInfo("Format", movie.format)}
           {renderMovieInfo("AorU", movie.AorU)}
-          {renderMovieInfo("Hallname", movie.Hallname)}
-          {renderMovieInfo("Showtime", movie.Showtime)}
+          {renderMovieInfo("Hallname", movie.hallName)}
+          {renderMovieInfo("Showtime", movie.showtime)}
         </div>
-        <Link to='/seatSelect'
+        <Link to={`/seatSelect/${movie.id}`}
           className="inline-block text-white rounded bg-indigo-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-indigo-700 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
         >
           Book
